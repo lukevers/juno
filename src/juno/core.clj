@@ -1,7 +1,9 @@
 (ns juno.core
   (:gen-class)
-  (:require [me.raynes.fs :as fs])
+  (:require [me.raynes.fs :as fs]
+            [compojure.route :as route])
   (:use org.httpkit.server
+        ring.middleware.resource
         compojure.core))
 
 ; Define our base. The base will be overwritten by the first argument
@@ -10,6 +12,12 @@
 (def base "")
 ; Define our current location.
 (def loc "")
+
+; Get the html header for all pages
+(defn header []
+  (def htm "<!DOCTYPE html><html><head><title>Juno</title>")
+  (def htm (str htm "<link rel=\"stylesheet\" href=\"/static/css/style.css\"/>"))
+  (str htm "</head>"))
 
 ; Turns seq into an html list
 (defn clist [ls]
@@ -30,20 +38,25 @@
   ; If the location is at "/" we want to set it to be an empty string.
   (if (= loc "/") (def loc ""))
   (def ls (fs/list-dir dir))
-  (clist ls))
+  (str (header) "<body>" (clist ls) "</body></html>"))
 
+; Router
 (defroutes router
-  (GET "*" [] roots))
+  (route/resources "/static/")
+  (GET "/*" [] roots))
 
+; Middleware logger
 (defn logger [app]
   (fn [req]
     (println req)
     (app req)))
 
+; App
 (def app 
   (-> router
       logger))
-  
+
+; Main
 (defn -main [& args]
   (def base (first args))
   (run-server app {:port 8080}))
