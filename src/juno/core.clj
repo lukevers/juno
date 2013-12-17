@@ -35,7 +35,7 @@
 (defn listdir [dir]
   "Since the given directory is not a git repository, we just continue
    to list the folders and files in this directory."
-  (str (header) "<body>" (clist (fs/list-dir dir)) "</body></html"))
+  (str (header) "<body>" (clist (fs/list-dir dir)) "</body></html>"))
 
 (defn roots [req]
   ""
