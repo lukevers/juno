@@ -16,7 +16,7 @@
 
 (defn header []
   "HTML header for pages."
-  (def htm "<!DOCTYPE html><html><head><title>Juno</title>")
+  (def htm (str "<!DOCTYPE html><html><head><title>" (git/user) "[Juno]</title>"))
   (def htm (str htm "<link rel=\"stylesheet\" href=\"/static/css/style.css\"/>"))
   (str htm "</head>"))
 
