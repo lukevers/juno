@@ -20,6 +20,10 @@
   (def htm (str htm "<link rel=\"stylesheet\" href=\"/static/css/style.css\"/>"))
   (str htm "</head>"))
 
+(defn footer []
+  "HTML footer for pages."
+  "<div class=\"center\"><a href=\"https://github.com/lukevers/juno\">Juno</a></div>")
+
 (defn clist [ls]
   "Turn seq of files/folders in a directory to a list."
   (def htm "<ul>")
@@ -35,7 +39,7 @@
 (defn listdir [dir]
   "Since the given directory is not a git repository, we just continue
    to list the folders and files in this directory."
-  (str (header) "<body>" (clist (fs/list-dir dir)) "</body></html>"))
+  (str (header) "<body>" (clist (fs/list-dir dir)) (footer) "</body></html>"))
 
 (defn stats [dir]
   
@@ -48,7 +52,7 @@
 (defn repo [dir]
   "Since the given directory is a git repository, we list stats about
    the git repo, the contents of the repo, and then show the log."
-  (str (header) "<body>" (stats dir) (clist (fs/list-dir dir)) (logs dir) "</body></html>"))
+  (str (header) "<body>" (stats dir) (clist (fs/list-dir dir)) (logs dir) (footer)"</body></html>"))
 
 (defn roots [req]
   ""

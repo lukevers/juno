@@ -34,3 +34,9 @@ li {
 li:hover {
     background-color: #073642;
 }
+
+/* == General == */
+
+.center {
+    text-align: center;
+}
