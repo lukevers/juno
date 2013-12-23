@@ -15,7 +15,7 @@
 (def loc "")
 
 (defn header []
-  "HTML header for pages"
+  "HTML header for pages."
   (def htm "<!DOCTYPE html><html><head><title>Juno</title>")
   (def htm (str htm "<link rel=\"stylesheet\" href=\"/static/css/style.css\"/>"))
   (str htm "</head>"))
@@ -37,15 +37,31 @@
    to list the folders and files in this directory."
   (str (header) "<body>" (clist (fs/list-dir dir)) "</body></html>"))
 
+(defn stats [dir]
+  
+  "")
+
+(defn logs [dir]
+  
+  "")
+
+(defn repo [dir]
+  "Since the given directory is a git repository, we list stats about
+   the git repo, the contents of the repo, and then show the log."
+  (str (header) "<body>" (stats dir) (clist (fs/list-dir dir)) (logs dir) "</body></html>"))
+
 (defn roots [req]
   ""
   (def dir (str base (get req :uri)))
   (def loc (get req :uri))
   ; If the location is at "/" we want to set it to be an empty string.
   (if (= loc "/") (def loc ""))
-  ; Check if the current location is a git repo
+  ; Check if the current location is a git repo. If it is not a git
+  ; repo, just list the dir, but if it is a git repo then we show
+  ; stats about the repo, list the contents of the repo, and show the
+  ; git log.
   (if (= (git/isgit dir) true)
-    (println "TODO git repo")
+    (repo dir)
     (listdir dir)))
 
 (defroutes router
