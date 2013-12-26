@@ -60,13 +60,16 @@
   (def loc (get req :uri))
   ; If the location is at "/" we want to set it to be an empty string.
   (if (= loc "/") (def loc ""))
-  ; Check if the current location is a git repo. If it is not a git
-  ; repo, just list the dir, but if it is a git repo then we show
-  ; stats about the repo, list the contents of the repo, and show the
-  ; git log.
-  (if (= (git/isgit dir) true)
-    (repo dir)
-    (listdir dir)))
+  ; Check if the current location is a file.
+  (if (= (fs/file? dir) true)
+    (fs/file dir)
+    ; Check if the current location is a git repo. If it is not a git
+    ; repo, just list the dir, but if it is a git repo then we show
+    ; stats about the repo, list the contents of the repo, and show the
+    ; git log.
+    (if (= (git/isgit dir) true)
+      (repo dir)
+      (listdir dir))))
 
 (defroutes router
   ""
