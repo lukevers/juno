@@ -17,3 +17,7 @@
 (defn sha-short [dir]
   "Gets the short sha of HEAD of the given directory."
   (get (shell/sh "git" "rev-parse" "--short" "HEAD" :dir dir) :out))
+
+(defn commits [dir]
+  "Gets the number of commits from HEAD of the given directory."
+  (get (shell/sh "git" "rev-list" "HEAD" "--count" :dir dir) :out))
