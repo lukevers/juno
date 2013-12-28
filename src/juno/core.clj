@@ -72,11 +72,6 @@
     (if (= (git/isgit (pdir dir)) true)
       (fs/file dir)
       "File is not in a git repository.")
-      
-;      (if (= (git/isgit (.substring dir 0 (.lastIndexOf dir "/"))) true) 
-;        (fs/file dir)
-;        "File is not in a git repository."))
-
     ; Check if the current location is a git repo. If it is not a git
     ; repo, just list the dir, but if it is a git repo then we show
     ; stats about the repo, list the contents of the repo, and show the
