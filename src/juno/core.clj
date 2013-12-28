@@ -54,15 +54,29 @@
    the git repo, the contents of the repo, and then show the log."
   (str (header) "<body>" (stats dir) (clist (fs/list-dir dir)) (logs dir) (footer)"</body></html>"))
 
+(defn pdir [dir]
+  "Removes an extra slash at the end of the string. After that, it
+   steps back and gives the directory that the current file is in."
+  (if (.endsWith dir "/")
+    (pdir (.substring dir 0 (.lastIndexOf dir "/")))
+    (.substring dir 0 (.lastIndexOf dir "/"))))
+
 (defn roots [req]
   ""
-  (def dir (str base (get req :uri)))
+  (def dir (str (.substring base 0 (.lastIndexOf base "/"))(get req :uri)))
   (def loc (get req :uri))
   ; If the location is at "/" we want to set it to be an empty string.
   (if (= loc "/") (def loc ""))
   ; Check if the current location is a file.
   (if (= (fs/file? dir) true)
-    (fs/file dir)
+    (if (= (git/isgit (pdir dir)) true)
+      (fs/file dir)
+      "File is not in a git repository.")
+      
+;      (if (= (git/isgit (.substring dir 0 (.lastIndexOf dir "/"))) true) 
+;        (fs/file dir)
+;        "File is not in a git repository."))
+
     ; Check if the current location is a git repo. If it is not a git
     ; repo, just list the dir, but if it is a git repo then we show
     ; stats about the repo, list the contents of the repo, and show the
