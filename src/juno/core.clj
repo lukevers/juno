@@ -55,14 +55,14 @@
   (str (header) "<body>" (stats dir) (clist (fs/list-dir dir)) (logs dir) (footer)"</body></html>"))
 
 (defn pdir [dir]
-  "Removes an extra slash at the end of the string. After that, it
+  "Removes extra slashes at the end of the string. After that, it
    steps back and gives the directory that the current file is in."
   (if (.endsWith dir "/")
     (pdir (.substring dir 0 (.lastIndexOf dir "/")))
     (.substring dir 0 (.lastIndexOf dir "/"))))
 
 (defn roots [req]
-  ""
+  "Taking care of everything else in our router."
   (def dir (str (.substring base 0 (.lastIndexOf base "/"))(get req :uri)))
   (def loc (get req :uri))
   ; If the location is at "/" we want to set it to be an empty string.
@@ -81,22 +81,22 @@
       (listdir dir))))
 
 (defroutes router
-  ""
+  "App routes."
   (route/resources "/static/")
   (GET "/*" [] roots))
 
 (defn logger [app]
-  ""
+  "Log requests (middleware)."
   (fn [req]
     (println req)
     (app req)))
 
 (def app 
-  ""
+  "App with middlware."
   (-> router
       logger))
 
 (defn -main [& args]
-  ""
+  "Git sharing directly over HTTP."
   (def base (first args))
   (run-server app {:port 8080}))
