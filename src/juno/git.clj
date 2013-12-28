@@ -9,3 +9,11 @@
 (defn user []
   "Gets the current git user."
   (get (shell/sh "git" "config" "--global" "user.name") :out))
+
+(defn sha [dir]
+  "Gets the full sha of HEAD of the given directory."
+  (get (shell/sh "git" "rev-parse" "HEAD" :dir dir) :out))
+
+(defn sha-short [dir]
+  "Gets the short sha of HEAD of the given directory."
+  (get (shell/sh "git" "rev-parse" "--short" "HEAD" :dir dir) :out))
