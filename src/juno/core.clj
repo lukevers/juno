@@ -43,7 +43,7 @@
 
 (defn stats [dir]
   
-  (git/commits dir))
+  "")
 
 (defn logs [dir]
   

@@ -21,3 +21,7 @@
 (defn commits [dir]
   "Gets the number of commits from HEAD of the given directory."
   (get (shell/sh "git" "rev-list" "HEAD" "--count" :dir dir) :out))
+
+(defn branch [dir]
+  "Gets the current branch from HEAD of the given directory."
+  (get (shell/sh "git" "rev-parse" "--abbrev-ref" "HEAD") :out))
